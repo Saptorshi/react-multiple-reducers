@@ -1,28 +1,38 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
+import {connect} from 'react-redux';
 
 class App extends Component {
   render() {
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
+        <div className="Col">
+          <span>A</span> : <span>{this.props.a}</span>
+          <button onClick={() => this.props.updateA(this.props.b)}>Update A</button>
+        </div>
+        <div className="Col">
+          <span>B</span> : <span>{this.props.b}</span>
+          <button onClick={() => this.props.updateB(this.props.a)}>Update B</button>
+        </div>        
       </div>
     );
   }
 }
 
-export default App;
+const mapStateToProps = (state) => {
+  return {
+    a : state.rA.a,
+    b : state.rB.b
+  }
+}
+
+const mapDispatchToProps = (dispach) => {
+  return {
+    updateA: (b) => dispach({type : 'UPDATE_A', b : b}),
+    updateB: (a) => dispach({type : 'UPDATE_B', a : a}),
+    // onDelItem: (id) => dispach({type : 'DEL_ITEM', key : id})
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
